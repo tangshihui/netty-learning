@@ -1,0 +1,49 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'scala'
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+
+group 'org.example'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+    implementation 'org.scala-lang:scala-library:2.12.15'
+    implementation group: 'io.netty', name: 'netty-all', version: '4.1.77.Final'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.11'
+    implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.11'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
+}
+
+shadowJar {
+    zip64 true
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+//    relocate('com.google.**', 'gridx.com.google')
+//    relocate('com.fasterxml.**', 'gridx.com.fasterxml')
+//    relocate('org.json4s', 'gridx.org.json4s')
+    archiveFileName = "spark-demo.jar"
+}
+
+test {
+    useJUnitPlatform()
+}
